@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class Counter : MonoBehaviour
 {
+    private const int StartButton = 0;
+
     [SerializeField] private float _startValue = 0.0f;
     [SerializeField] private float _step = 1.0f;
     [SerializeField] private float _delay = 0.5f;
 
-    public event Action<float> Changed;
-
     private WaitForSeconds _wait;
+    private Coroutine _coroutine;
     private float _currentValue;
     private bool _isWork = false;
+
+    public event Action<float> Changed;
 
     public float StartValue => _startValue;
 
@@ -24,12 +27,12 @@ public class Counter : MonoBehaviour
 
     private void Update()
     {
-        InputReader();
+        ReadInput();
     }
 
-    private void InputReader()
+    private void ReadInput()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(StartButton))
         {
             ManageWork();
         }
@@ -40,12 +43,16 @@ public class Counter : MonoBehaviour
         if (_isWork == false)
         {
             _isWork = true;
-            StartCoroutine(Count());
+            _coroutine = StartCoroutine(Count());
         }
         else
         {
             _isWork = false;
-            StopCoroutine(Count());
+
+            if (_coroutine != null)
+            {
+                StopCoroutine(_coroutine);
+            }
         }
     }
 

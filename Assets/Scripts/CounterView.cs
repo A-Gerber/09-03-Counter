@@ -14,15 +14,15 @@ public class CounterView : MonoBehaviour
 
     private void OnEnable()
     {
-        _counter.Changed += OutputCurrentValue;
+        _counter.Changed += UpdateCounterText;
     }
 
     private void OnDisable()
     {
-        _counter.Changed -= OutputCurrentValue;
+        _counter.Changed -= UpdateCounterText;
     }
 
-    private void OutputCurrentValue(float currentValue)
+    private void UpdateCounterText(float currentValue)
     {
         _counterText.text = currentValue.ToString("");
     }
